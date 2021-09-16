@@ -1,0 +1,48 @@
+﻿ <!-- Footer Start -->
+<div class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            @{
+                Html.RenderAction("GetTouch", "Home");
+                Html.RenderAction("FollowUs", "Home");
+                Html.RenderAction("BottomMenuLeft", "Home");
+                Html.RenderAction("BottomMenuRight", "Home");
+             }
+        </div>
+
+        <div class="row payment align-items-center">
+            <div class="col-md-6">
+                <div class="payment-method">
+                    <h2>We Accept:</h2>
+                    <img src="/assets/web/img/payment-method.png" alt="Payment Method" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="payment-security">
+                    <h2>Secured By:</h2>
+                    <img src="/assets/web/img/godaddy.svg" alt="Payment Security" />
+                    <img src="/assets/web/img/norton.svg" alt="Payment Security" />
+                    <img src="/assets/web/img/ssl.svg" alt="Payment Security" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+<!-- Footer Bottom Start -->
+<div class="footer-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 copyright">
+                <p>Copyright &copy; <a href="#">FPT ShopClothes</a>. All Rights Reserved</p>
+            </div>
+
+            <div class="col-md-6 template-by">
+                <p>Template By <a href="#">FPT ShopClothes</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer Bottom End -->
+<!-- Back to Top -->
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>

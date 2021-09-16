@@ -1,0 +1,214 @@
+﻿@model List<OnlineShop.Models.CartItem>
+@{
+    ViewBag.Title = "OrderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var order = (Model.EF.Order)ViewBag.Order;
+    var code = ViewBag.Code;
+}
+
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Products</a></li>
+            <li class="breadcrumb-item active">OrderDetail</li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Start -->
+<div class="checkout">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="checkout-inner">
+                    <div class="cart-page-inner">
+                        <p class="label-danger"><i style="color:firebrick;">*Note: Please save the link so you can check your order status</i></p>
+                        <h4>This is code to check where is you parcel being delivered? Code: @code</h4>
+                        <h6>Status your parcel: @(order.Status == 0 ? "Pending" : "Delivered")</h6>
+                        <div class="table-responsive mb-20">
+                            @{
+                                decimal totalMoney = 0;
+                            }
+                            @if (Model.Count > 0)
+                            {
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                            <th>Image</th>
+                                            <th>Amount</th>
+                                            <th>Size</th>
+                                            <th>Unit Price</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="align-middle">
+                                        @foreach (var item in Model)
+                                        {
+                                            var price = item.Product.PromotionPrice.HasValue ? item.Product.PromotionPrice : item.Product.Price.GetValueOrDefault(0);
+                                            <tr>
+                                                <td class="codeProduct">@item.Product.Code</td>
+                                                <td>@item.Product.Name</td>
+                                                <td>
+                                                    <div class="img">
+                                                        <a href="#"><img src="@item.Product.Image" alt="Image"></a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @item.Quantity
+                                                </td>
+                                                <td>
+                                                    @item.size
+                                                </td>
+                                                <td>@price</td>
+                                                <td>@(price * item.Quantity)</td>
+                                            </tr>
+                                            totalMoney += (decimal)(price * item.Quantity);
+                                        }
+
+
+
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <span class="alert alert-danger">There are no products in the cart</span>
+                            }
+                        </div>
+                        <!-- Pagination Start -->
+                        <div class="col-md-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    @if (ViewBag.TotalPage > 1)
+                                    {
+                                        var pageDisplay = (int)ViewBag.MaxPage;
+                                        int currentPage = ((int)ViewBag.Page);
+                                        int totalPage = (int)ViewBag.TotalPage;
+
+                                        var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+                                        var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+                                        var link = "/check-out";
+                                        if (currentPage > ViewBag.First)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@link?page=@ViewBag.Prev" tabindex="-1">Previous</a>
+                                            </li>
+                                        }
+                                        for (int i = startPageIndex; i <= endPageIndex; i++)
+                                        {
+                                            if (currentPage == i)
+                                            {
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="@link?page=@i">@i</a>
+                                                </li>
+
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item"><a class="page-link" href="@link?page=@i">@i</a></li>
+
+                                            }
+                                        }
+                                        if (currentPage < totalPage)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@link?page=@ViewBag.Next">Next</a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                        <!-- Pagination Start -->
+                    </div>
+                    <div class="billing-address">
+                        <h2>Billing Address</h2>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Full Name</label>
+                                <input class="form-control" name="shipName" type="text" value="@order.ShipName" placeholder="Full Name" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label>E-mail</label>
+                                <input class="form-control" name="shipEmail" type="email" placeholder="E-mail"  value="@order.ShipEmail" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Mobile No</label>
+                                <input class="form-control" name="shipMobile" type="text" placeholder="Mobile No" value="@order.ShipMobile" disabled>
+                            </div>
+                            <div class="col-md-12">
+                                <label>Address</label>
+                                <input class="form-control" name="shipAddress" type="text" placeholder="Address" value="@order.ShipAddress" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Country</label>
+                                <select class="custom-select" name="shipCountry">
+                                    <option selected>Viet Nam</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>City</label>
+                                <input class="form-control" type="text" name="shipCity" placeholder="City" value="@order.ShipCity" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label>District</label>
+                                <input class="form-control" type="text" name="shipDistrict" placeholder="State" value="@order.ShipDistrict" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Village/Sub-district</label>
+                                <input class="form-control" type="text" name="shipVillage" placeholder="Village/Sub-district" value="@order.ShipVillage" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="checkout-inner">
+                    <div class="checkout-summary">
+                        <h1>Cart Summary</h1>
+                        <p>Sub Total<span>@totalMoney.ToString("N0") VND</span></p>
+                        <p>Shipping Cost<span>@(totalMoney * 1 / 100) VND</span></p>
+                        @{
+                            var total = (totalMoney + totalMoney * 1 / 100);
+                        }
+                        <h2>Grand Total<span>@total.ToString("N0") VND</span></h2>
+                    </div>
+
+                    <div class="checkout-payment">
+                        <div class="payment-methods">
+                            <h1>Payment Methods</h1>
+                            <div class="payment-method">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="payment-1" name="payment" disabled>
+                                    <label class="custom-control-label" for="payment-1">Paypal</label>
+                                </div>
+                                <div class="payment-content" id="payment-1-show">
+                                    <p>
+                                        Temporarily unable to use this function.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="payment-method">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="payment-2" name="payment" checked disabled>
+                                    <label class="custom-control-label" for="payment-2">Ship COD</label>
+                                </div>
+                                <div class="payment-content" id="payment-2-show">
+                                    <p>
+                                        Cash on delivery (COD)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Checkout End -->

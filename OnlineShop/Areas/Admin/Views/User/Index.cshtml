@@ -1,0 +1,114 @@
+﻿@model PagedList.IPagedList<Model.EF.User>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Management User";
+}
+@section page{
+    Management User
+}
+<div class="data-table-area mg-b-15">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="sparkline13-list shadow-reset">
+                    <div class="sparkline13-hd">
+                        <div class="main-sparkline13-hd">
+                            <h1>Users <span class="table-project-n">Data</span> Table </h1>
+                            <div class="sparkline13-outline-icon">
+                                <span class="sparkline13-collapse-link"><i class="fa fa-chevron-up"></i></span>
+                                <span><i class="fa fa-wrench"></i></span>
+                                <span class="sparkline13-collapse-close"><i class="fa fa-times"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sparkline13-graph">
+                        <div class="basic-login-form-ad mg-b-10">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <div class="basic-login-inner inline-basic-form">
+                                        <div class="form-group-inner">
+                                            <div class="row">
+                                                @using (Html.BeginForm("Index", "User", FormMethod.Get))
+                                                {
+                                                    <div class="col-lg-3">
+                                                        <input type="Text" name="search" value="@ViewBag.SearchString" class="form-control basic-ele-mg-b-10" placeholder="Enter Username Or Name">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="login-btn-inner">
+                                                            <div class="row">
+                                                                <button class="btn btn-sm btn-primary login-submit-cs" type="submit">
+                                                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                                                    Search
+                                                                </button>
+                                                                <a class="btn btn-custon-four btn-success" style="border-radius:0px;" href="/Admin/User/Create/">
+                                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                    Create
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="datatable-dashv1-list custom-datatable-overright">
+                            <div id="toolbar">
+                                <select class="form-control">
+                                    <option value="all">Export All</option>
+                                    <option value="selected">Export Selected</option>
+                                </select>
+                            </div>
+                            <table id="table" data-toggle="table" data-show-columns="true" data-show-pagination-switch="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                                <thead>
+                                    <tr>
+                                        <th data-field="state" data-checkbox="true">#</th>
+                                        <th data-field="id">Username</th>
+                                        <th data-field="name" data-editable="true">Name</th>
+                                        <th data-field="role" data-editable="true">Role</th>
+                                        <th data-field="address" data-editable="true">Address</th>
+                                        <th data-field="email" data-editable="true">Email</th>
+                                        <th data-field="phone" data-editable="true">Phone</th>
+                                        <th data-field="status" data-editable="true">Status</th>
+                                        <th data-field="action" data-editable="true">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr id="row_@item.ID">
+                                        <td></td>
+                                        <td>@item.Username</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.GroupID</td>
+                                        <td>@item.Address</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Phone</td>
+                                        <td>
+                                            <button class="btn btn-@((item.Status == true)? "success" : "danger")" id="active" type="button" data-id="@item.ID">
+                                                @(item.Status == true ? "Active" : "Block")
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-custon-four btn-warning" href="/Admin/User/Edit/@item.ID"><span class="adminpro-icon adminpro-warning-danger"></span>Edit</a>
+                                            <a class="btn btn-custon-four btn-danger" onclick="confirmBeforeAfterDelete(@item.ID)" href="#"><span class="adminpro-icon adminpro-danger-error"></span>Delete</a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @search = @ViewBag.SearchString }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section script{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/Assets/Admin/js/controller/userController.js"></script>
+}

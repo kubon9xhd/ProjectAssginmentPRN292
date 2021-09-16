@@ -1,0 +1,11 @@
+﻿@model List<Model.EF.ProductCategory>
+<nav class="navbar bg-light">
+    <ul class="navbar-nav">
+        @foreach (var item in Model.Where(x => x.ParentID == null))
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="/product/@item.MetaTitle-@item.ID"><i class="@item.Icon"></i>@item.Name</a>
+            </li>
+        }
+    </ul>
+</nav>

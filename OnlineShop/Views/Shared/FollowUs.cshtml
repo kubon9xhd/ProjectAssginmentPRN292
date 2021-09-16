@@ -1,0 +1,14 @@
+﻿@model List<Model.EF.FollowU>
+<div class="col-lg-3 col-md-6">
+    <div class="footer-widget">
+        <h2>Follow Us</h2>
+        <div class="contact-info">
+            <div class="social">
+                @foreach (var item in Model)
+                {
+                    <a href="@item.url"><i class="@item.icon"></i></a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

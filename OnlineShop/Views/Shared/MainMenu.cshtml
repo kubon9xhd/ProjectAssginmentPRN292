@@ -1,0 +1,45 @@
+﻿@model List<Model.EF.Menu>
+<div class="nav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <a href="#" class="navbar-brand">MENU</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav mr-auto">
+                    @foreach (var item in Model)
+                    {
+                        <a href="@item.Link" class="nav-item nav-link" target="@item.Target">@item.Text</a>
+                    }
+                </div>
+                <div class="navbar-nav ml-auto">
+                    @{ 
+                        var sesssion = (OnlineShop.Common.UserLogin)Session[OnlineShop.Common.CommonConstants.USER_SESSION];
+                    }
+                    @if (sesssion == null)
+                    {
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
+                            <div class="dropdown-menu">
+                                <a href="/account/login" class="dropdown-item">Login</a>
+                                <a href="/account/register" class="dropdown-item">Register</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Hello, @sesssion.Username</a>
+                            <div class="dropdown-menu">
+                                <a href="/account/@sesssion.Username-@sesssion.UserId" class="dropdown-item">Setting</a>
+                                <a href="/account/logut" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+﻿<div class="left-custom-menu-adp-wrap">
+    <ul class="nav navbar-nav left-sidebar-menu-pro">
+        @if (ViewBag.isLogin != true)
+        {
+            <li class="nav-item">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa big-icon fa-user"></i> <span class="mini-dn">Management Account</span> <span class="indicator-right-menu mini-dn"><i class="fa indicator-mn fa-angle-left"></i></span></a>
+                <div role="menu" class="dropdown-menu left-menu-dropdown animated flipInX">
+                    <a href="/admin/user" class="dropdown-item">User Management</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa big-icon fa-product-hunt"></i> <span class="mini-dn">Management Product</span> <span class="indicator-right-menu mini-dn"><i class="fa indicator-mn fa-angle-left"></i></span></a>
+                <div role="menu" class="dropdown-menu left-menu-dropdown animated flipInX">
+                    <a href="/admin/product" class="dropdown-item">Product</a>
+                    <a href="/admin/productCategory" class="dropdown-item">Product Category</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa big-icon fa-newspaper-o"></i> <span class="mini-dn">Management News</span> <span class="indicator-right-menu mini-dn"><i class="fa indicator-mn fa-angle-left"></i></span></a>
+                <div role="menu" class="dropdown-menu left-menu-dropdown animated flipInX">
+                    <a href="/admin/content" class="dropdown-item">Content</a>
+                    <a href="/admin/category" class="dropdown-item">Content Category</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa big-icon fa-shopping-cart"></i> <span class="mini-dn">Management News</span> <span class="indicator-right-menu mini-dn"><i class="fa indicator-mn fa-angle-left"></i></span></a>
+                <div role="menu" class="dropdown-menu left-menu-dropdown animated flipInX">
+                    <a href="/admin/order" class="dropdown-item">Order</a>
+                </div>
+            </li>
+        }
+
+    </ul>
+</div>

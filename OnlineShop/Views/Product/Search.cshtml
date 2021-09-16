@@ -1,0 +1,121 @@
+﻿@model List<Model.EF.Product>
+@{
+    ViewBag.Title = "Search Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var keyWord = ViewBag.KeyWord;
+}
+
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Search</a></li>
+            <li class="breadcrumb-item active">Key Search: @keyWord</li>
+        </ul>
+    </div>
+</div>
+<!-- Product List Start -->
+<div class="product-view">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        var url = "/product-details/" + @item.MetaTitle + "-" + @item.ID;
+                        <div class="col-md-4">
+                            <div class="product-item">
+                                <div class="product-title">
+                                    <a href="@url">@item.Name</a>
+                                    <div class="ratting">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                </div>
+                                <div class="product-image">
+                                    <a href="@url">
+                                        <img src="@item.Image" alt="Product Image">
+                                    </a>
+                                    <div class="product-action">
+                                        <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                        <a href="#"><i class="fa fa-heart"></i></a>
+                                        <a href="#"><i class="fa fa-search"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-price">
+                                    <h3><span>VND</span>@(item.PromotionPrice.HasValue ? item.PromotionPrice.Value.ToString("N0") : item.Price.Value.ToString("N0"))</h3>
+                                    <a class="btn" href="@url"><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Pagination Start -->
+                <div class="col-md-12">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            @if (ViewBag.TotalPage > 1)
+                            {
+                                var pageDisplay = (int)ViewBag.MaxPage;
+                                int currentPage = ((int)ViewBag.Page);
+                                int totalPage = (int)ViewBag.TotalPage;
+
+                                var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+                                var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+                                var link = "/product/search?txtSearch="+keyWord;
+                                if (currentPage > ViewBag.First)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@link&page=@ViewBag.Prev" tabindex="-1">Previous</a>
+                                    </li>
+                                }
+                                for (int i = startPageIndex; i <= endPageIndex; i++)
+                                {
+                                    if (currentPage == i)
+                                    {
+                                        <li class="page-item active">
+                                            <a class="page-link" href="@link&page=@i">@i</a>
+                                        </li>
+
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="@link&page=@i">@i</a></li>
+
+                                    }
+                                }
+                                if (currentPage < totalPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@link&page=@ViewBag.Next">Next</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </nav>
+                </div>
+                <!-- Pagination Start -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product List End -->
+<!-- Brand Start -->
+<div class="brand">
+    <div class="container-fluid">
+        <div class="brand-slider">
+            <div class="brand-item"><img src="/assets/web/img/brand-1.png" alt=""></div>
+            <div class="brand-item"><img src="/assets/web/img/brand-2.png" alt=""></div>
+            <div class="brand-item"><img src="/assets/web/img/brand-3.png" alt=""></div>
+            <div class="brand-item"><img src="/assets/web/img/brand-4.png" alt=""></div>
+            <div class="brand-item"><img src="/assets/web/img/brand-5.png" alt=""></div>
+            <div class="brand-item"><img src="/assets/web/img/brand-6.png" alt=""></div>
+        </div>
+    </div>
+</div>
+<!-- Brand End -->

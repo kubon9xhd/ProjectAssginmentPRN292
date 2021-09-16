@@ -1,0 +1,22 @@
+﻿<div class="bottom-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <div class="logo">
+                    <a href="/">
+                        <img src="/assets/web/img/logo.png" alt="Logo">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <form action="/product/search" method="get">
+                    <div class="search">
+                        <input type="text" name="txtSearch" placeholder="Search">
+                        <button><i class="fa fa-search"></i></button>
+                    </div>
+                </form>
+            </div>
+            @{Html.RenderAction("HeaderCart", "Home");}
+        </div>
+    </div>
+</div>

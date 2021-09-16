@@ -1,0 +1,170 @@
+﻿@model List<OnlineShop.Models.CartItem>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Products</a></li>
+            <li class="breadcrumb-item active">Cart</li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Cart Start -->
+<div class="cart-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                
+                <div class="cart-page-inner">
+                    <div class="table-responsive mb-20">
+                        @{
+                            decimal totalMoney = 0;
+                        }
+                        @if (Model.Count > 0)
+                        {
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Image</th>
+                                        <th>Amount</th>
+                                        <th>Size</th>
+                                        <th>Unit Price</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="align-middle">
+                                    @foreach (var item in Model)
+                                    {
+                                        var price = item.Product.PromotionPrice.HasValue ? item.Product.PromotionPrice : item.Product.Price.GetValueOrDefault(0);
+                                        <tr>
+                                            <td class="codeProduct">@item.Product.Code</td>
+                                            <td>@item.Product.Name</td>
+                                            <td>
+                                                <div class="img">
+                                                    <a href="#"><img src="@item.Product.Image" alt="Image"></a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="qty">
+                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                    <input type="text" class="txtQuantity" data-id="@item.Product.ID" name="quantity" value="@item.Quantity">
+                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="txtSize" name="size" value="@item.size">
+                                            </td>
+                                            <td>@price</td>
+                                            <td>@(price * item.Quantity)</td>
+                                            <td><button class="btn-delete" href="#" data-id="@item.Product.ID" data-size="@item.size"><i class="fa fa-trash"></i></button></td>
+                                        </tr>
+                                        totalMoney += (decimal)(price * item.Quantity);
+                                    }
+
+
+
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <span class="alert alert-danger">There are no products in the cart</span>
+                        }
+                    </div>
+                    <!-- Pagination Start -->
+                    <div class="col-md-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                @if (ViewBag.TotalPage > 1)
+                                {
+                                    var pageDisplay = (int)ViewBag.MaxPage;
+                                    int currentPage = ((int)ViewBag.Page);
+                                    int totalPage = (int)ViewBag.TotalPage;
+
+                                    var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+                                    var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+                                    var link = "/cart";
+                                    if (currentPage > ViewBag.First)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="@link?page=@ViewBag.Prev" tabindex="-1">Previous</a>
+                                        </li>
+                                    }
+                                    for (int i = startPageIndex; i <= endPageIndex; i++)
+                                    {
+                                        if (currentPage == i)
+                                        {
+                                            <li class="page-item active">
+                                                <a class="page-link" href="@link?page=@i">@i</a>
+                                            </li>
+
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="@link?page=@i">@i</a></li>
+
+                                        }
+                                    }
+                                    if (currentPage < totalPage)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="@link?page=@ViewBag.Next">Next</a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- Pagination Start -->
+                    <a class="btn right mg-b-30" id="btnContinue" href="#">Continue Shopping</a>
+                    <a class="btn right" id="btnDeleteAll" href="#">Delete All Product</a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart-page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="coupon">
+                                <input type="text" placeholder="Coupon Code">
+                                <button>Apply Code</button>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="cart-summary">
+                                <div class="cart-content">
+                                    <h1>Cart Summary</h1>
+                                    <p>Sub Total<span>@totalMoney.ToString("N0") VND</span></p>
+                                    <p>Shipping Cost<span>@(totalMoney * 1 / 100) VND</span></p>
+                                    @{
+                                        var total = (totalMoney + totalMoney * 1 / 100);
+                                    }
+                                    <h2>Grand Total<span>@total.ToString("N0") VND</span></h2>
+                                </div>
+                                <div class="cart-btn">
+                                    <button id="btnUpdateCart">Update Cart</button>
+                                    <button id="btnCheckOut">Checkout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart End -->
+@section script{
+    <script src="~/Assets/Web/js/controller/cartController.js"></script>
+}

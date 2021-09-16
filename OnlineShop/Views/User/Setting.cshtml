@@ -1,0 +1,160 @@
+﻿@model List<Model.EF.Order>
+@{
+    ViewBag.Title = "Setting Account";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var modelUser = (Model.EF.User)ViewBag.UserSession;
+
+}
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Setting</a></li>
+            <li class="breadcrumb-item active">My Account</li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- My Account Start -->
+<div class="my-account">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="dashboard-nav" data-toggle="pill" href="#dashboard-tab" role="tab"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
+                    <a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab"><i class="fa fa-shopping-bag"></i>Orders</a>
+                    <a class="nav-link" id="account-nav" data-toggle="pill" href="#account-tab" role="tab"><i class="fa fa-user"></i>Account Details</a>
+                    <a class="nav-link" href="/account/logut"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="dashboard-tab" role="tabpanel" aria-labelledby="dashboard-nav">
+                        <h4>Dashboard</h4>
+                        <p>
+                            The function is currently updating.
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
+                        <div class="table-responsive mb-20">
+                            <table class="table table-bordered mb-20">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>CODE</th>
+                                        <th>Name</th>
+                                        <th>DateBuy</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>@item.ID</td>
+                                        <td>@item.MetaTitle</td>
+                                        <td>@item.ShipName</td>
+                                        <td>@item.CreatedDate</td>
+                                        <td>@(item.Status == 0 ? "Pending" : "Delivered")</td>
+                                        <td><a class="btn" href="/order-detail/@item.MetaTitle-@item.ID">View</a></td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination Start -->
+                        <div class="col-md-12">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    @if (ViewBag.TotalPage > 1)
+                                    {
+                                        var pageDisplay = (int)ViewBag.MaxPage;
+                                        int currentPage = ((int)ViewBag.Page);
+                                        int totalPage = (int)ViewBag.TotalPage;
+
+                                        var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+                                        var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+                                        var link = "/account/" + ViewBag.Username + "-" + ViewBag.UserID;
+                                        if (currentPage > ViewBag.First)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@link?page=@ViewBag.Prev" tabindex="-1">Previous</a>
+                                            </li>
+                                        }
+                                        for (int i = startPageIndex; i <= endPageIndex; i++)
+                                        {
+                                            if (currentPage == i)
+                                            {
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="@link?page=@i">@i</a>
+                                                </li>
+
+                                            }
+                                            else
+                                            {
+                                                <li class="page-item"><a class="page-link" href="@link?page=@i">@i</a></li>
+
+                                            }
+                                        }
+                                        if (currentPage < totalPage)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@link?page=@ViewBag.Next">Next</a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                        <!-- Pagination Start -->
+                    </div>
+                    <div class="tab-pane fade" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
+                        <h4>Account Details</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input class="form-control" id="txtUsername" value="@modelUser.Username" type="text" placeholder="Username">
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" id="txtName" value="@modelUser.Name" type="text" placeholder="Name">
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" id="txtAddress" value="@modelUser.Address" type="text" placeholder="Address">
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" id="txtMobile" value="@modelUser.Phone" type="text" placeholder="Mobile">
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" id="txtEmail" value="@modelUser.Email" type="text" placeholder="Email">
+                            </div>
+                            <div class="col-md-12">
+                                <button id="btnUpdateAccount" class="btn">Update Account</button>
+                                <br><br>
+                            </div>
+                        </div>
+                        <h4>Password change</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input class="form-control" type="password" id="oldPassword" placeholder="Current Password">
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" type="password" id="newPassword" placeholder="New Password">
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" type="password" id="reNewPassword" placeholder="Confirm Password">
+                            </div>
+                            <div class="col-md-12">
+                                <button class="btn" id="btnSaveChange">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- My Account End -->
+@section script{
+    <script src="~/Assets/Web/js/controller/userController.js"></script>
+} 

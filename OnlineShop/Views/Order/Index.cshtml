@@ -1,0 +1,113 @@
+﻿@model PagedList.IPagedList<Model.EF.Order>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "List Product";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section page{
+    Management Product
+}
+<div class="data-table-area mg-b-15">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="sparkline13-list shadow-reset">
+                    <div class="sparkline13-hd">
+                        <div class="main-sparkline13-hd">
+                            <h1>Category <span class="table-project-n">Data</span> Table</h1>
+                            <div class="sparkline13-outline-icon">
+                                <span class="sparkline13-collapse-link"><i class="fa fa-chevron-up"></i></span>
+                                <span><i class="fa fa-wrench"></i></span>
+                                <span class="sparkline13-collapse-close"><i class="fa fa-times"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sparkline13-graph">
+                        <div class="basic-login-form-ad mg-b-10">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <div class="basic-login-inner inline-basic-form">
+                                        <div class="form-group-inner">
+                                            <div class="row">
+                                                @using (Html.BeginForm("Index", "Order", FormMethod.Get))
+                                                {
+                                                    <div class="col-lg-3">
+                                                        <input type="Text" name="search" value="@ViewBag.SearchString" class="form-control basic-ele-mg-b-10" placeholder="Enter Name">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="login-btn-inner">
+                                                            <div class="row">
+                                                                <button class="btn btn-sm btn-primary login-submit-cs" type="submit">
+                                                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                                                    Search
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="datatable-dashv1-list custom-datatable-overright">
+                            <div id="toolbar">
+                                <select class="form-control">
+                                    <option value="all">Export All</option>
+                                    <option value="selected">Export Selected</option>
+                                </select>
+                            </div>
+                            <table id="table" data-toggle="table" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                                <thead>
+                                    <tr>
+                                        <th data-field="state" data-checkbox="true"></th>
+                                        <th data-field="id">ID</th>
+                                        <th data-field="customerID" data-editable="true">CustomerID</th>
+                                        <th data-field="image" data-editable="true">Code</th>
+                                        <th data-field="name" data-editable="true">ShipName</th>
+                                        <th data-field="email" data-editable="true">ShipEmail</th>
+                                        <th data-field="createdDate" data-editable="true">CreatedDate</th>
+                                        <th data-field="status" data-editable="true">Status</th>
+                                        <th data-field="action" data-editable="true">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr id="row_@item.ID">
+                                            <td></td>
+                                            <td>@item.ID</td>
+                                            <td>@item.CustomerID</td>
+                                            <td>@item.MetaTitle</td>
+                                            <td>@item.ShipName</td>
+                                            <td>@item.ShipEmail</td>
+                                            <td>@(item.CreatedDate.HasValue? @item.CreatedDate.Value.ToString("dd/MM/yyyy") : "")</td>
+                                            <td>
+                                                <button class="btn btn-@((item.Status == 1)? "success" : "danger")" id="active" type="button" data-id="@item.ID">
+                                                    @(item.Status == 1 ? "Delivered" : "Pending")
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-custon-four btn-danger" onclick="confirmBeforeAfterDelete(@item.ID)" href="#"><span class="adminpro-icon adminpro-danger-error"></span>Delete</a>
+                                                <a class="btn btn-custon-four btn-success" href="http://localhost:44386/order-detail/@item.MetaTitle-@item.ID"><span class="adminpro-icon adminpro-check-success">View</span></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @search = @ViewBag.SearchString }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section script{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Assets/Admin/js/controller/orderController.js"></script>
+}
+

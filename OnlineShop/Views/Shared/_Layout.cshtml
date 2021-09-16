@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>E Store - @ViewBag.Title - eCommerce</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="eCommerce HTML Template Free Download" name="keywords">
+    <meta content="eCommerce HTML Template Free Download" name="description">
+
+    <!-- Favicon -->
+    <link href="/assets/web/img/favicon.ico" rel="icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro:700,900&display=swap" rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="/assets/web/lib/slick/slick.css" rel="stylesheet">
+    <link href="/assets/web/lib/slick/slick-theme.css" rel="stylesheet">
+    <!-- notifications CSS
+    ============================================ -->
+    <link rel="stylesheet" href="/Assets/Web/css/Lobibox.min.css">
+    <link rel="stylesheet" href="/Assets/Web/css/notifications.css">
+    <!-- Template Stylesheet -->
+    <link href="/assets/web/css/style.css" rel="stylesheet">
+</head>
+<body>
+    @{
+        <!-- Top bar Start -->
+        Html.RenderAction("TopBar", "Home");
+        <!-- Top bar End -->
+        <!-- Nav Bar Start -->
+        Html.RenderAction("MainMenu", "Home");
+        <!-- Nav Bar End -->
+    }
+    <!-- Bottom Bar Start -->
+    @RenderPage("BottomBar.cshtml")
+    <!-- Bottom Bar End -->
+    <!-- Main -->
+    <div class="main">
+        @RenderBody()
+    </div>
+    <!-- End Main-->
+    @RenderPage("_Footer.cshtml")
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/web/lib/easing/easing.min.js"></script>
+    <script src="/assets/web/lib/slick/slick.min.js"></script>
+    <!--Notify-->
+    <script src="~/assets/Web/js/Lobibox.js"></script>
+    <script src="/assets/Web/js/notification-active.js"></script>
+    <!-- Template Javascript -->
+    <script src="/assets/web/js/main.js"></script>
+    @RenderSection("script", required: false);
+    @if (TempData["AlertMessage"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                Lobibox.notify('@TempData["AlertType"]', {
+                    delay: 15000,
+                    msg: '@TempData["AlertMessage"]'
+                });
+            })
+        </script>
+    }
+
+</body>
+</html>
